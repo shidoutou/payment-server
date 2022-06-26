@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.swagger.mapper.FilmCategoryMapper">
+    <resultMap id="BaseResultMap" type="io.swagger.domain.FilmCategory">
+        <id column="film_id" jdbcType="SMALLINT" property="filmId"/>
+        <id column="category_id" jdbcType="SMALLINT" property="categoryId"/>
+        <result column="last_update" jdbcType="TIMESTAMP" property="lastUpdate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    film_id, category_id, last_update
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="io.swagger.domain.FilmCategoryKey"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from film_category
+        where film_id = #{filmId,jdbcType=SMALLINT}
+        and category_id = #{categoryId,jdbcType=SMALLINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="io.swagger.domain.FilmCategoryKey">
+    delete from film_category
+    where film_id = #{filmId,jdbcType=SMALLINT}
+      and category_id = #{categoryId,jdbcType=SMALLINT}
+  </delete>
+    <insert id="insert" parameterType="io.swagger.domain.FilmCategory">
+        <selectKey keyProperty="filmId" order="AFTER" resultType="java.lang.Short">
+            PostgreSQL
+        </selectKey>
+        insert into film_category (category_id, last_update)
+        values (#{categoryId,jdbcType=SMALLINT}, #{lastUpdate,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="io.swagger.domain.FilmCategory">
+        <selectKey keyProperty="filmId" order="AFTER" resultType="java.lang.Short">
+            PostgreSQL
+        </selectKey>
+        insert into film_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="lastUpdate != null">
+                last_update,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=SMALLINT},
+            </if>
+            <if test="lastUpdate != null">
+                #{lastUpdate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="io.swagger.domain.FilmCategory">
+        update film_category
+        <set>
+            <if test="lastUpdate != null">
+                last_update = #{lastUpdate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where film_id = #{filmId,jdbcType=SMALLINT}
+        and category_id = #{categoryId,jdbcType=SMALLINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="io.swagger.domain.FilmCategory">
+    update film_category
+    set last_update = #{lastUpdate,jdbcType=TIMESTAMP}
+    where film_id = #{filmId,jdbcType=SMALLINT}
+      and category_id = #{categoryId,jdbcType=SMALLINT}
+  </update>
+</mapper>

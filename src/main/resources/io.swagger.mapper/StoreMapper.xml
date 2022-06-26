@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.swagger.mapper.StoreMapper">
+    <resultMap id="BaseResultMap" type="io.swagger.domain.Store">
+        <id column="store_id" jdbcType="INTEGER" property="storeId"/>
+        <result column="manager_staff_id" jdbcType="SMALLINT" property="managerStaffId"/>
+        <result column="address_id" jdbcType="SMALLINT" property="addressId"/>
+        <result column="last_update" jdbcType="TIMESTAMP" property="lastUpdate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    store_id, manager_staff_id, address_id, last_update
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from store
+        where store_id = #{storeId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from store
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="io.swagger.domain.Store">
+        <selectKey keyProperty="storeId" order="AFTER" resultType="java.lang.Integer">
+            PostgreSQL
+        </selectKey>
+        insert into store (manager_staff_id, address_id, last_update
+        )
+        values (#{managerStaffId,jdbcType=SMALLINT}, #{addressId,jdbcType=SMALLINT}, #{lastUpdate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="io.swagger.domain.Store">
+        <selectKey keyProperty="storeId" order="AFTER" resultType="java.lang.Integer">
+            PostgreSQL
+        </selectKey>
+        insert into store
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="managerStaffId != null">
+                manager_staff_id,
+            </if>
+            <if test="addressId != null">
+                address_id,
+            </if>
+            <if test="lastUpdate != null">
+                last_update,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="managerStaffId != null">
+                #{managerStaffId,jdbcType=SMALLINT},
+            </if>
+            <if test="addressId != null">
+                #{addressId,jdbcType=SMALLINT},
+            </if>
+            <if test="lastUpdate != null">
+                #{lastUpdate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="io.swagger.domain.Store">
+        update store
+        <set>
+            <if test="managerStaffId != null">
+                manager_staff_id = #{managerStaffId,jdbcType=SMALLINT},
+            </if>
+            <if test="addressId != null">
+                address_id = #{addressId,jdbcType=SMALLINT},
+            </if>
+            <if test="lastUpdate != null">
+                last_update = #{lastUpdate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where store_id = #{storeId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="io.swagger.domain.Store">
+    update store
+    set manager_staff_id = #{managerStaffId,jdbcType=SMALLINT},
+      address_id = #{addressId,jdbcType=SMALLINT},
+      last_update = #{lastUpdate,jdbcType=TIMESTAMP}
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </update>
+</mapper>
